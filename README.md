@@ -1,9 +1,9 @@
 # Svelte Navigator History
 
-[![npm package](https://img.shields.io/npm/v/svelte-navigator-history.svg?style=flat-square)](https://npmjs.com/package/svelte-navigator)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/svelte-navigator-history?style=flat-square)
-![NPM](https://img.shields.io/npm/l/svelte-navigator-history?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/mefechoel/svelte-navigator-history?style=flat-square)
+[![npm package](https://img.shields.io/npm/v/svelte-navigator-history.svg?style=flat-square)](https://npmjs.com/package/svelte-navigator-history)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/svelte-navigator-history?style=flat-square)](https://bundlephobia.com/result?p=svelte-navigator-history)
+[![NPM](https://img.shields.io/npm/l/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/blob/main/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/mefechoel/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/commits/main)
 
 History module for
 [svelte-navigator](https://github.com/mefechoel/svelte-navigator).
