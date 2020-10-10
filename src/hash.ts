@@ -1,0 +1,88 @@
+import { addListener, getPathString, parsePath, stringifyPath } from "./util";
+import createNavigate from "./navigate";
+import {
+	createHistoryContainer,
+	createState,
+	getBrowserStateAndKey,
+} from "./shared";
+import { Action, CreateHref, HistoryActions, NavigatorHistory } from "./types";
+
+export interface HashHistoryOptions {
+	window?: Window;
+}
+
+/**
+ * Use the hash fragment of the url to simulate routing via url.
+ * This approach is great if you want to get started quickly or if
+ * you don't have access to your server's configuration.
+ *
+ * @param {HashHistoryOptions} [options] Supply a custom window object
+ *
+ * @returns {NavigatorHistory} The history object
+ */
+export default function createHashHistory<State = unknown>({
+	window = document.defaultView as Window,
+}: HashHistoryOptions = {}): NavigatorHistory<State> {
+	const globalHistory = window.history;
+
+	const getHashPath = () => window.location.hash.substr(1);
+
+	const getHashLocation = () => ({
+		...parsePath(getHashPath()),
+		...getBrowserStateAndKey<State>(window),
+	});
+
+	const {
+		listen,
+		set: setState,
+		getAction,
+		getLocation,
+	} = createHistoryContainer<State>({ initialLocation: getHashLocation() });
+
+	const popstateListener = () => setState(getHashLocation(), Action.Pop);
+	const popstateUnlisten = addListener(window, "popstate", popstateListener);
+	const hashchangeUnlisten = addListener(window, "hashchange", () => {
+		// Ignore extraneous hashchange events.
+		if (getHashPath() !== stringifyPath(getLocation())) {
+			popstateListener();
+		}
+	});
+
+	const createHref: CreateHref = (to) => `#${getPathString(to)}`;
+
+	const actions: HistoryActions<State> = {
+		push(uri, state) {
+			const fullUri = createHref(uri);
+			try {
+				globalHistory.pushState(createState(state), "", fullUri);
+			} catch (e) {
+				window.location.assign(fullUri);
+			}
+			setState(getHashLocation(), Action.Push);
+		},
+		replace(uri, state) {
+			globalHistory.replaceState(createState(state), "", createHref(uri));
+			setState(getHashLocation(), Action.Replace);
+		},
+		go(delta) {
+			globalHistory.go(delta);
+		},
+	};
+
+	return {
+		get location() {
+			return getLocation();
+		},
+		get action() {
+			return getAction();
+		},
+		listen,
+		createHref,
+		navigate: createNavigate(actions),
+		release() {
+			popstateUnlisten();
+			hashchangeUnlisten();
+		},
+		...actions,
+	};
+}

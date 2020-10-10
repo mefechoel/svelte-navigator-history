@@ -1,0 +1,9 @@
+node_modules
+src
+.editorconfig
+.eslintignore
+.eslintrc
+.prettierignore
+.prettierrc.js
+rollup.config.js
+yarn.lock
