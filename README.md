@@ -6,27 +6,28 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/mefechoel/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/commits/main)
 
 History module for
-[svelte-navigator](https://github.com/mefechoel/svelte-navigator).
+[svelte-navigator](https://github.com/mefechoel/svelte-navigator). It abstracts
+the management of the apps location using either the HTML5 History API, the hash
+fragment of the url or an in-memory mode.
 
-This is an **experimental** package, that will be used for the next version of
-svelte-navigator. It abstracts the management of the apps location using either
-the HTML5 History API, the hash fragment of the url or an in-memory mode.
+⚠️⚠️⚠️ This is an **_experimental_** package, that will be used for the next
+version of svelte-navigator. ⚠️⚠️⚠️
 
 ## Table of Contents
 
 - [API](#api)
-  - [NavigatorHistory](#navigatorhistory)
+  - [`NavigatorHistory`](#navigatorhistory)
   - [Browser History](#browser-history)
-    - [createBrowserHistory](#createbrowserhistory)
-    - [browserHistory](#browserhistory)
+    - [`createBrowserHistory`](#createbrowserhistory)
+    - [`browserHistory`](#browserhistory)
   - [Hash History](#hash-history)
-    - [createHashHistory](#createhashhistory)
-    - [hashHistory](#hashhistory)
+    - [`createHashHistory`](#createhashhistory)
+    - [`hashHistory`](#hashhistory)
   - [Memory History](#memory-history)
-    - [createMemoryHistory](#creatememoryhistory)
-    - [memoryHistory](#memoryhistory)
-  - [parsePath](#parsepath)
-  - [stringifyPath](#stringifypath)
+    - [`createMemoryHistory`](#creatememoryhistory)
+    - [`memoryHistory`](#memoryhistory)
+  - [`parsePath`](#parsepath)
+  - [`stringifyPath`](#stringifypath)
 - [License](#license)
 
 ## API
