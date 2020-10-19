@@ -4,6 +4,7 @@
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/svelte-navigator-history?style=flat-square)](https://bundlephobia.com/result?p=svelte-navigator-history)
 [![NPM](https://img.shields.io/npm/l/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/blob/main/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mefechoel/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/commits/main)
+[Test](https://github.com/mefechoel/svelte-navigator/workflows/Test/badge.svg?style=flat-square)
 
 History module for
 [svelte-navigator](https://github.com/mefechoel/svelte-navigator). It abstracts
