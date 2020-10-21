@@ -1,32 +1,34 @@
 {
-  "plugins": [
-    "@typescript-eslint/eslint-plugin",
-    "react"
-  ],
-  "extends": [
-    "airbnb",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "rules": {
-    "import/extensions": "off",
-    "import/no-unresolved": "off",
-    "indent": "off",
-    "@typescript-eslint/indent": "off",
-    "no-undef": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off",
-    "import/no-named-as-default": "off",
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-member-accessibility": "off",
-    "import/no-extraneous-dependencies": "off"
-  },
-  "env": {
-    "es6": true,
-    "node": true
-  },
-  "parser": "@typescript-eslint/parser"
+	"plugins": ["@typescript-eslint/eslint-plugin", "react"],
+	"extends": [
+		"airbnb",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
+		"plugin:react-hooks/recommended"
+	],
+	"rules": {
+		"import/extensions": "off",
+		"import/no-unresolved": "off",
+		"indent": "off",
+		"@typescript-eslint/indent": "off",
+		"no-undef": "off",
+		"jsx-a11y/click-events-have-key-events": "off",
+		"no-restricted-syntax": "off",
+		"no-underscore-dangle": "off",
+		"import/no-named-as-default": "off",
+		"import/prefer-default-export": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/explicit-member-accessibility": "off",
+		"import/no-extraneous-dependencies": "off"
+	},
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"parser": "@typescript-eslint/parser",
+	"settings": {
+		"react": {
+			"version": "16.13"
+		}
+	}
 }

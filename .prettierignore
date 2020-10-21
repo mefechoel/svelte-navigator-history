@@ -1,1 +1,10 @@
-/dist/**/*
+**/dist
+**/build/
+**/coverage/
+**/.nyc_output
+**/.husky
+**/.vscode
+**/node_modules/
+**/tmp
+**/package-lock.json
+**/package.json
