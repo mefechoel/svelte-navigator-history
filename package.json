@@ -75,6 +75,7 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "husky": "^5.0.0-beta.0",
     "is-ci": "^2.0.0",
+    "lint-staged": "^10.5.0",
     "pinst": "^2.0.0",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
@@ -85,5 +86,8 @@
     "source-map-explorer": "^2.5.0",
     "start-server-and-test": "^1.11.5",
     "typescript": "^4.0.3"
+  },
+  "lint-staged": {
+    "*": ["eslint", "prettier --check"]
   }
 }
