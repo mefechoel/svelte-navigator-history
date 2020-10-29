@@ -10,9 +10,9 @@ import {
 import { createGlobalId, noop } from "./util";
 
 export const getBrowserStateAndKey = <State = unknown>(
-	window: Window,
+	history: History,
 ): KeyedState<State> => {
-	const { state } = window.history;
+	const { state } = history;
 	return {
 		state: (state && state.value) || null,
 		key: (state && state.key) || "initial",

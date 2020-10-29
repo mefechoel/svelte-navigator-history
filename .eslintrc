@@ -30,5 +30,19 @@
 		"react": {
 			"version": "16.13"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"files": ["cypress/**/*"],
+			"plugins": ["cypress"],
+			"extends": ["plugin:cypress/recommended"],
+			"env": {
+				"cypress/globals": true
+			},
+			"rules": {
+				"spaced-comment": "off",
+				"import/no-extraneous-dependencies": "off"
+			}
+		}
+	]
 }

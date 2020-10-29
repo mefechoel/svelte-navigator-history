@@ -1,4 +1,10 @@
-import { addListener, getPathString, parsePath, stringifyPath } from "./util";
+import {
+	addListener,
+	getPathString,
+	parsePath,
+	stringifyPath,
+	substr,
+} from "./util";
 import createNavigate from "./navigate";
 import {
 	createHistoryContainer,
@@ -23,13 +29,13 @@ export interface HashHistoryOptions {
 export default function createHashHistory<State = unknown>({
 	window = document.defaultView as Window,
 }: HashHistoryOptions = {}): NavigatorHistory<State> {
-	const globalHistory = window.history;
+	const { history, location } = window;
 
-	const getHashPath = () => window.location.hash.substr(1);
+	const getHashPath = () => substr(location.hash, 1);
 
 	const getHashLocation = () => ({
 		...parsePath(getHashPath()),
-		...getBrowserStateAndKey<State>(window),
+		...getBrowserStateAndKey<State>(history),
 	});
 
 	const {
@@ -54,18 +60,18 @@ export default function createHashHistory<State = unknown>({
 		push(uri, state) {
 			const fullUri = createHref(uri);
 			try {
-				globalHistory.pushState(createState(state), "", fullUri);
+				history.pushState(createState(state), "", fullUri);
 			} catch (e) {
-				window.location.assign(fullUri);
+				location.assign(fullUri);
 			}
 			setState(getHashLocation(), Action.Push);
 		},
 		replace(uri, state) {
-			globalHistory.replaceState(createState(state), "", createHref(uri));
+			history.replaceState(createState(state), "", createHref(uri));
 			setState(getHashLocation(), Action.Replace);
 		},
 		go(delta) {
-			globalHistory.go(delta);
+			history.go(delta);
 		},
 	};
 

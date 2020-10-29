@@ -1,6 +1,6 @@
 import { HistoryLocation, To } from "./types";
 
-const substr = (str: string, start: number, end?: number): string =>
+export const substr = (str: string, start: number, end?: number): string =>
 	str.substr(start, end);
 
 /**
@@ -53,9 +53,10 @@ export const parsePath = (path: string): HistoryLocation => {
 	const search = hasSearchIndex
 		? normalizeUrlFragment(substr(pathnameAndSearch, searchIndex))
 		: "";
-	const pathname = hasSearchIndex
-		? substr(pathnameAndSearch, 0, searchIndex)
-		: pathnameAndSearch;
+	const pathname =
+		(hasSearchIndex
+			? substr(pathnameAndSearch, 0, searchIndex)
+			: pathnameAndSearch) || "/";
 	return { pathname, search, hash };
 };
 

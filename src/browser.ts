@@ -28,15 +28,15 @@ export interface BrowserHistoryOptions {
 export default function createBrowserHistory<State = unknown>({
 	window = document.defaultView as Window,
 }: BrowserHistoryOptions = {}): NavigatorHistory<State> {
-	const globalHistory = window.history;
+	const { history, location } = window;
 
 	const getBrowserLocation = () => {
-		const { pathname, search, hash } = window.location;
+		const { pathname, search, hash } = location;
 		return {
 			pathname: encodeURI(decodeURI(pathname)),
 			search,
 			hash,
-			...getBrowserStateAndKey<State>(window),
+			...getBrowserStateAndKey<State>(history),
 		};
 	};
 
@@ -54,18 +54,18 @@ export default function createBrowserHistory<State = unknown>({
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
 			try {
-				globalHistory.pushState(createState(state), "", uri);
+				history.pushState(createState(state), "", uri);
 			} catch (e) {
-				window.location.assign(uri);
+				location.assign(uri);
 			}
 			setState(getBrowserLocation(), Action.Push);
 		},
 		replace(uri, state) {
-			globalHistory.replaceState(createState(state), "", uri);
+			history.replaceState(createState(state), "", uri);
 			setState(getBrowserLocation(), Action.Replace);
 		},
 		go(delta) {
-			globalHistory.go(delta);
+			history.go(delta);
 		},
 	};
 
