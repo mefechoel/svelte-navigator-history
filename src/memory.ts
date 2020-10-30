@@ -1,8 +1,15 @@
-import { getPathObject, getPathString, isString, noop } from "./util";
+import {
+	getPathObject,
+	getPathString,
+	isString,
+	noop,
+	POP,
+	PUSH,
+	REPLACE,
+} from "./util";
 import createNavigate from "./navigate";
 import { createHistoryContainer, createState } from "./shared";
-import {
-	Action,
+import type {
 	HistoryActions,
 	NavigatorHistory,
 	NavigatorLocation,
@@ -81,11 +88,11 @@ export default function createMemoryHistory<State = unknown>(
 			// of navigation.
 			stack = stack.slice(0, index);
 			stack.push(createStackFrame(uri, state));
-			setState(getMemoryLocation(), Action.Push);
+			setState(getMemoryLocation(), PUSH);
 		},
 		replace(uri, state) {
 			stack[index] = createStackFrame(uri, state);
-			setState(getMemoryLocation(), Action.Replace);
+			setState(getMemoryLocation(), REPLACE);
 		},
 		go(to) {
 			const newIndex = index + to;
@@ -93,7 +100,7 @@ export default function createMemoryHistory<State = unknown>(
 				return;
 			}
 			index = newIndex;
-			setState(getMemoryLocation(), Action.Pop);
+			setState(getMemoryLocation(), POP);
 		},
 	};
 

@@ -1,4 +1,4 @@
-import { HistoryActions, NavigateFn, NavigateOptions } from "./types";
+import type { HistoryActions, NavigateFn, NavigateOptions } from "./types";
 import { isNumber } from "./util";
 
 export default function createNavigate<State = unknown>({

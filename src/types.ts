@@ -19,13 +19,7 @@ export interface StateContainer<State = unknown> {
 export type NavigatorLocation<State = unknown> = HistoryLocation &
 	KeyedState<State | null>;
 
-// False positive?
-// eslint-disable-next-line no-shadow
-export enum Action {
-	Pop = "POP",
-	Push = "PUSH",
-	Replace = "REPLACE",
-}
+export type Action = "POP" | "PUSH" | "REPLACE";
 
 export interface HistoryActions<State = unknown> {
 	push: (uri: string, state?: State | null) => void;

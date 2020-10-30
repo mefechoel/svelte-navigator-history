@@ -1,4 +1,4 @@
-import { HistoryLocation, To } from "./types";
+import type { HistoryLocation, To } from "./types";
 
 export const substr = (str: string, start: number, end?: number): string =>
 	str.substr(start, end);
@@ -95,3 +95,7 @@ export const addListener = (
 	target.addEventListener(type, handler);
 	return () => target.removeEventListener(type, handler);
 };
+
+export const POP = "POP";
+export const PUSH = "PUSH";
+export const REPLACE = "REPLACE";

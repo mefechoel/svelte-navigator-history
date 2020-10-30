@@ -2,6 +2,9 @@ import {
 	addListener,
 	getPathString,
 	parsePath,
+	POP,
+	PUSH,
+	REPLACE,
 	stringifyPath,
 	substr,
 } from "./util";
@@ -11,7 +14,7 @@ import {
 	createState,
 	getBrowserStateAndKey,
 } from "./shared";
-import { Action, CreateHref, HistoryActions, NavigatorHistory } from "./types";
+import type { CreateHref, HistoryActions, NavigatorHistory } from "./types";
 
 export interface HashHistoryOptions {
 	window?: Window;
@@ -45,7 +48,7 @@ export default function createHashHistory<State = unknown>({
 		getLocation,
 	} = createHistoryContainer<State>({ initialLocation: getHashLocation() });
 
-	const popstateListener = () => setState(getHashLocation(), Action.Pop);
+	const popstateListener = () => setState(getHashLocation(), POP);
 	const popstateUnlisten = addListener(window, "popstate", popstateListener);
 	const hashchangeUnlisten = addListener(window, "hashchange", () => {
 		// Ignore extraneous hashchange events.
@@ -64,11 +67,11 @@ export default function createHashHistory<State = unknown>({
 			} catch (e) {
 				location.assign(fullUri);
 			}
-			setState(getHashLocation(), Action.Push);
+			setState(getHashLocation(), PUSH);
 		},
 		replace(uri, state) {
 			history.replaceState(createState(state), "", createHref(uri));
-			setState(getHashLocation(), Action.Replace);
+			setState(getHashLocation(), REPLACE);
 		},
 		go(delta) {
 			history.go(delta);

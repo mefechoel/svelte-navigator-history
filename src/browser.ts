@@ -1,11 +1,11 @@
-import { addListener, getPathString } from "./util";
+import { addListener, getPathString, POP, PUSH, REPLACE } from "./util";
 import createNavigate from "./navigate";
 import {
 	createHistoryContainer,
 	createState,
 	getBrowserStateAndKey,
 } from "./shared";
-import { Action, HistoryActions, NavigatorHistory } from "./types";
+import type { HistoryActions, NavigatorHistory } from "./types";
 
 export interface BrowserHistoryOptions {
 	window?: Window;
@@ -48,7 +48,7 @@ export default function createBrowserHistory<State = unknown>({
 	} = createHistoryContainer<State>({ initialLocation: getBrowserLocation() });
 
 	const popstateUnlisten = addListener(window, "popstate", () =>
-		setState(getBrowserLocation(), Action.Pop),
+		setState(getBrowserLocation(), POP),
 	);
 
 	const actions: HistoryActions<State> = {
@@ -58,11 +58,11 @@ export default function createBrowserHistory<State = unknown>({
 			} catch (e) {
 				location.assign(uri);
 			}
-			setState(getBrowserLocation(), Action.Push);
+			setState(getBrowserLocation(), PUSH);
 		},
 		replace(uri, state) {
 			history.replaceState(createState(state), "", uri);
-			setState(getBrowserLocation(), Action.Replace);
+			setState(getBrowserLocation(), REPLACE);
 		},
 		go(delta) {
 			history.go(delta);

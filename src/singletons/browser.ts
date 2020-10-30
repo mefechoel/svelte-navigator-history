@@ -1,5 +1,5 @@
 import createBrowserHistory from "../browser";
-import { NavigatorHistory } from "../types";
+import type { NavigatorHistory } from "../types";
 
 /**
  * A browser history singleton you can use as the default history instance.

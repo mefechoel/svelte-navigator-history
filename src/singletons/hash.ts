@@ -1,5 +1,5 @@
 import createHashHistory from "../hash";
-import { NavigatorHistory } from "../types";
+import type { NavigatorHistory } from "../types";
 
 /**
  * A hash history singleton you can use as the default history instance.

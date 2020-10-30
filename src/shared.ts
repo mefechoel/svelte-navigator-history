@@ -1,4 +1,4 @@
-import {
+import type {
 	KeyedState,
 	StateContainer,
 	NavigatorLocation,
@@ -7,7 +7,7 @@ import {
 	Listener,
 	HistoryContainer,
 } from "./types";
-import { createGlobalId, noop } from "./util";
+import { createGlobalId, noop, POP } from "./util";
 
 export const getBrowserStateAndKey = <State = unknown>(
 	history: History,
@@ -58,7 +58,7 @@ export function createHistoryContainer<State = unknown>({
 	initialLocation: NavigatorLocation<State>;
 }): HistoryContainer<State> {
 	let location = initialLocation;
-	let action: Action = Action.Pop;
+	let action: Action = POP;
 	const { listen, notify } = createSubscribable({
 		getState: () => ({ location, action }),
 	});
