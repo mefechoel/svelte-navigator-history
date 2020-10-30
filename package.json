@@ -88,6 +88,9 @@
     "typescript": "^4.0.3"
   },
   "lint-staged": {
-    "*": ["eslint", "prettier --check"]
+    "*": [
+      "eslint",
+      "prettier --check"
+    ]
   }
 }

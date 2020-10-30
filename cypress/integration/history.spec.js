@@ -6,13 +6,11 @@ import {
 	createAssertPath,
 	createAssertState,
 	createNavigate,
-} from "./helpers";
+	assertParsePath,
+	assertStringifyPath,
+} from "../helpers";
 
 describe("History", () => {
-	beforeEach(() => {
-		cy.visit("/");
-	});
-
 	const runTest = (mod) => {
 		const navigate = createNavigate(mod);
 		const assertState = createAssertState(mod);
@@ -21,6 +19,10 @@ describe("History", () => {
 		const assertHistoryLocation = createAssertHistoryLocation(mod);
 
 		describe(mod, () => {
+			beforeEach(() => {
+				cy.visit("/");
+			});
+
 			describe("navigate", () => {
 				it("basic navigation", () => {
 					assertAction("POP");
@@ -221,4 +223,103 @@ describe("History", () => {
 	runTest("browserHistory");
 	runTest("hashHistory");
 	runTest("memoryHistory");
+
+	describe("parsePath", () => {
+		it("happy path", () => {
+			assertParsePath("/path?search#hash", {
+				pathname: "/path",
+				search: "?search",
+				hash: "#hash",
+			});
+			assertParsePath("/path?search", {
+				pathname: "/path",
+				search: "?search",
+				hash: "",
+			});
+			assertParsePath("/path#hash", {
+				pathname: "/path",
+				search: "",
+				hash: "#hash",
+			});
+		});
+
+		it("removes empty hash or search", () => {
+			assertParsePath("/path?#hash", {
+				pathname: "/path",
+				search: "",
+				hash: "#hash",
+			});
+			assertParsePath("/path?search#", {
+				pathname: "/path",
+				search: "?search",
+				hash: "",
+			});
+			assertParsePath("/path?#", {
+				pathname: "/path",
+				search: "",
+				hash: "",
+			});
+		});
+	});
+
+	describe("stringifyPath", () => {
+		it("works", () => {
+			assertStringifyPath(
+				{
+					pathname: "/path",
+					search: "?search",
+					hash: "#hash",
+				},
+				"/path?search#hash",
+			);
+			assertStringifyPath(
+				{
+					pathname: "/path",
+					search: "",
+					hash: "",
+				},
+				"/path",
+			);
+			assertStringifyPath(
+				{
+					pathname: "",
+					search: "?search",
+					hash: "",
+				},
+				"?search",
+			);
+			assertStringifyPath(
+				{
+					pathname: "",
+					search: "",
+					hash: "#hash",
+				},
+				"#hash",
+			);
+			assertStringifyPath(
+				{
+					pathname: "",
+					search: "?search",
+					hash: "#hash",
+				},
+				"?search#hash",
+			);
+			assertStringifyPath(
+				{
+					pathname: "/path",
+					search: "?search",
+					hash: "",
+				},
+				"/path?search",
+			);
+			assertStringifyPath(
+				{
+					pathname: "/path",
+					search: "",
+					hash: "#hash",
+				},
+				"/path#hash",
+			);
+		});
+	});
 });

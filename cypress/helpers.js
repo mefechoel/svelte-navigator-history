@@ -75,3 +75,13 @@ export const createAssertState = (mod) => (expectedState, wait = false) => {
 		.then((hist) => hist.location.state)
 		.should("deep.equal", expectedState);
 };
+
+export const assertParsePath = (input, expected) =>
+	history("parsePath").then((parsePath) => {
+		expect(parsePath(input)).to.deep.equal(expected);
+	});
+
+export const assertStringifyPath = (input, expected) =>
+	history("stringifyPath").then((stringifyPath) => {
+		expect(stringifyPath(input)).to.equal(expected);
+	});
