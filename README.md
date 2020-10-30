@@ -28,6 +28,7 @@ version of svelte-navigator. ⚠️⚠️⚠️
     - [`memoryHistory`](#memoryhistory)
   - [`parsePath`](#parsepath)
   - [`stringifyPath`](#stringifypath)
+  - [`createNavigate`](#createnavigate)
 - [License](#license)
 
 ## API
@@ -335,6 +336,30 @@ const location = {
 };
 const path = stringifyPath(location);
 // -> "/search?q=falafel#result-3"
+```
+
+### `createNavigate`
+
+Create the `createNavigate` convenience method expected in the
+`NavigatorHistory` interface. Pass a Partial `NavigatorHistory` object, which
+implements the `push`, `replace` and `go` methods, to the factory function.
+
+```js
+import { createNavigate } from "svelte-navigator-history";
+
+const customHistory = {
+	push(uri, state) {
+		console.log("PUSH");
+	},
+	replace(uri, state) {
+		console.log("REPLACE");
+	},
+	go(delta) {
+		console.log("GO");
+	},
+};
+
+customHistory.navigate = createNavigate(customHistory);
 ```
 
 ## License
