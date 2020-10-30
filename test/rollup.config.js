@@ -22,6 +22,7 @@ export default {
 			tsconfigOverride: {
 				compilerOptions: {
 					declaration: false,
+					target: "ESNext",
 				},
 			},
 		}),
