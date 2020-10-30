@@ -11,7 +11,6 @@
 		"import/no-unresolved": "off",
 		"indent": "off",
 		"@typescript-eslint/indent": "off",
-		"no-undef": "off",
 		"jsx-a11y/click-events-have-key-events": "off",
 		"no-restricted-syntax": "off",
 		"no-underscore-dangle": "off",
@@ -23,7 +22,7 @@
 	},
 	"env": {
 		"es6": true,
-		"node": true
+		"browser": true
 	},
 	"parser": "@typescript-eslint/parser",
 	"settings": {
