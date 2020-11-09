@@ -1,5 +1,6 @@
 import { nodeResolve as resolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
 import typescript from "rollup-plugin-typescript2";
 import { terser } from "rollup-plugin-terser";
 import rimraf from "rimraf";
@@ -17,7 +18,14 @@ function createConfig({ file, format, minify = false }) {
 			sourcemap: true,
 			...(isUmd ? { name: "SvelteNavigatorHistory", exports: "named" } : {}),
 		},
-		plugins: [resolve(), commonjs(), typescript(), minify && terser()],
+		plugins: [
+			resolve(),
+			commonjs(),
+			minify &&
+				replace({ "process.env.NODE_ENV": JSON.stringify("production") }),
+			typescript(),
+			minify && terser(),
+		],
 	};
 }
 

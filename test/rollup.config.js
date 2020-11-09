@@ -4,6 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import babel from "@rollup/plugin-babel";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import replace from "@rollup/plugin-replace";
 
 rimraf.sync(path.join(__dirname, "public/build"));
 
@@ -26,6 +27,7 @@ export default {
 				},
 			},
 		}),
+		replace({ "process.env.NODE_ENV": JSON.stringify("development") }),
 		babel({
 			babelHelpers: "bundled",
 			babelrc: false,

@@ -1,7 +1,16 @@
+import {
+	PARSE_PATH_STARTS_WITH_SLASH,
+	PARSE_PATH_TYPE,
+	STRINGIFY_PATH_TYPE,
+} from "./errorCodes";
+import invariant from "./invariant";
 import type { HistoryLocation, To } from "./types";
 
 export const substr = (str: string, start: number, end?: number): string =>
 	str.substr(start, end);
+
+export const startsWith = (str: string, start: string): boolean =>
+	substr(str, 0, 1) === start;
 
 /**
  * Create a globally unique id
@@ -42,6 +51,20 @@ const normalizeUrlFragment = (frag: string): string =>
  * ```
  */
 export const parsePath = (path: string): HistoryLocation => {
+	invariant(
+		!isString(path),
+		PARSE_PATH_TYPE,
+		process.env.NODE_ENV !== "production" && typeof path,
+	);
+	invariant(
+		path !== "" &&
+			!startsWith(path, "/") &&
+			!startsWith(path, "?") &&
+			!startsWith(path, "#"),
+		PARSE_PATH_STARTS_WITH_SLASH,
+		process.env.NODE_ENV !== "production" && path,
+	);
+
 	const searchIndex = path.indexOf("?");
 	const hashIndex = path.indexOf("#");
 	const hasSearchIndex = searchIndex !== -1;
@@ -78,7 +101,13 @@ export const parsePath = (path: string): HistoryLocation => {
  * ```
  */
 export const stringifyPath = (location: HistoryLocation): string => {
-	return location.pathname + location.search + location.hash;
+	const { pathname, search, hash } = location;
+	invariant(
+		!isString(pathname) || !isString(search) || !isString(hash),
+		STRINGIFY_PATH_TYPE,
+		process.env.NODE_ENV !== "production" && JSON.stringify(location),
+	);
+	return pathname + search + hash;
 };
 
 export const getPathString = (to: To): string =>

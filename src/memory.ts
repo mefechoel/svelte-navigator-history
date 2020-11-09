@@ -95,8 +95,8 @@ export default function createMemoryHistory<State = unknown>(
 			stack[index] = createStackFrame(uri, state);
 			setState(getMemoryLocation(), REPLACE);
 		},
-		go(to) {
-			const newIndex = index + to;
+		go(delta) {
+			const newIndex = index + delta;
 			if (newIndex < 0 || newIndex > stack.length - 1) {
 				return;
 			}
