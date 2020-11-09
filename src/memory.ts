@@ -11,10 +11,11 @@ import createNavigate from "./navigate";
 import { createHistoryContainer, createState } from "./shared";
 import type {
 	HistoryActions,
-	NavigatorHistory,
+	MemoryHistory,
 	NavigatorLocation,
 	To,
 } from "./types";
+import HistoryType from "./HistoryType";
 
 interface MemoryHistoryObjectOptions {
 	initialEntries?: To[];
@@ -33,10 +34,10 @@ const createStackFrame = <State = unknown>(
 
 export function createMemoryHistory<State = unknown>(
 	options?: MemoryHistoryObjectOptions,
-): NavigatorHistory<State>;
+): MemoryHistory<State>;
 export function createMemoryHistory<State = unknown>(
 	initialPath?: string,
-): NavigatorHistory<State>;
+): MemoryHistory<State>;
 
 /**
  * Keep the location state of your app in memory.
@@ -48,11 +49,11 @@ export function createMemoryHistory<State = unknown>(
  * @param {MemoryHistoryOptions} [options] Supply initial entries for
  * the history stack
  *
- * @returns {NavigatorHistory} The history object
+ * @returns {MemoryHistory} The history object
  */
 export default function createMemoryHistory<State = unknown>(
 	options?: MemoryHistoryOptions,
-): NavigatorHistory<State> {
+): MemoryHistory<State> {
 	const initialEntries = isString(options)
 		? [options]
 		: (options && options.initialEntries) || ["/"];
@@ -68,7 +69,7 @@ export default function createMemoryHistory<State = unknown>(
 	const getMemoryLocation = () => stack[index];
 
 	const {
-		listen,
+		subscribe,
 		set: setState,
 		getAction,
 		getLocation,
@@ -111,10 +112,11 @@ export default function createMemoryHistory<State = unknown>(
 		get action() {
 			return getAction();
 		},
-		listen,
+		subscribe,
 		createHref: getPathString,
 		navigate: createNavigate(actions),
 		release: noop,
 		...actions,
+		[HistoryType]: "memory",
 	};
 }

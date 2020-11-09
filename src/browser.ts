@@ -5,7 +5,8 @@ import {
 	createState,
 	getBrowserStateAndKey,
 } from "./shared";
-import type { HistoryActions, NavigatorHistory } from "./types";
+import type { HistoryActions, BrowserHistory } from "./types";
+import HistoryType from "./HistoryType";
 
 export interface BrowserHistoryOptions {
 	window?: Window;
@@ -23,11 +24,11 @@ export interface BrowserHistoryOptions {
  *
  * @param {BrowserHistoryOptions} [options] Supply a custom window object
  *
- * @returns {NavigatorHistory} The history object
+ * @returns {BrowserHistory} The history object
  */
 export default function createBrowserHistory<State = unknown>({
 	window = document.defaultView as Window,
-}: BrowserHistoryOptions = {}): NavigatorHistory<State> {
+}: BrowserHistoryOptions = {}): BrowserHistory<State> {
 	const { history, location } = window;
 
 	const getBrowserLocation = () => {
@@ -41,7 +42,7 @@ export default function createBrowserHistory<State = unknown>({
 	};
 
 	const {
-		listen,
+		subscribe,
 		set: setState,
 		getAction,
 		getLocation,
@@ -53,6 +54,7 @@ export default function createBrowserHistory<State = unknown>({
 
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
+			// try...catch iOS Safari limits to 100 pushState calls
 			try {
 				history.pushState(createState(state), "", uri);
 			} catch (e) {
@@ -76,10 +78,11 @@ export default function createBrowserHistory<State = unknown>({
 		get action() {
 			return getAction();
 		},
-		listen,
+		subscribe,
 		createHref: getPathString,
 		navigate: createNavigate(actions),
 		release: popstateUnlisten,
 		...actions,
+		[HistoryType]: "browser",
 	};
 }

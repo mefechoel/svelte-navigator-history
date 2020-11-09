@@ -1,3 +1,5 @@
+import HistoryType from "./HistoryType";
+
 export interface HistoryLocation {
 	pathname: string;
 	search: string;
@@ -27,10 +29,10 @@ export interface HistoryActions<State = unknown> {
 	go: (delta: number) => void;
 }
 
-export type Listener<StoreValue> = (value: StoreValue) => void;
+export type Subscriber<StoreValue> = (value: StoreValue) => void;
 
 export interface Subscribable<StoreValue> {
-	listen(listener: Listener<StoreValue>): () => void;
+	subscribe(subscriber: Subscriber<StoreValue>): () => void;
 	notify: () => void;
 	getSize: () => number;
 }
@@ -44,7 +46,7 @@ export interface HistoryContainer<State = unknown> {
 	getLocation: () => NavigatorLocation<State>;
 	getAction: () => Action;
 	set: (nextLocation: NavigatorLocation<State>, nextAction: Action) => void;
-	listen: (listener: Listener<HistoryUpdate<State>>) => () => void;
+	subscribe: (subscriber: Subscriber<HistoryUpdate<State>>) => () => void;
 }
 
 export type CreateHref = (to: string) => string;
@@ -63,8 +65,23 @@ export interface NavigatorHistory<State = unknown>
 	extends HistoryActions<State> {
 	readonly location: NavigatorLocation<State>;
 	readonly action: Action;
-	listen: (listener: Listener<HistoryUpdate<State>>) => () => void;
+	subscribe: (subscriber: Subscriber<HistoryUpdate<State>>) => () => void;
 	createHref: CreateHref;
 	navigate: NavigateFn<State>;
 	release: () => void;
+	[HistoryType]?: string;
+}
+
+export interface BrowserHistory<State = unknown>
+	extends NavigatorHistory<State> {
+	[HistoryType]: "browser";
+}
+
+export interface HashHistory<State = unknown> extends NavigatorHistory<State> {
+	[HistoryType]: "hash";
+}
+
+export interface MemoryHistory<State = unknown>
+	extends NavigatorHistory<State> {
+	[HistoryType]: "memory";
 }

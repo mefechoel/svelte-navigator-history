@@ -4,7 +4,7 @@ import type {
 	NavigatorLocation,
 	Action,
 	Subscribable,
-	Listener,
+	Subscriber,
 	HistoryContainer,
 } from "./types";
 import { createGlobalId, noop, POP } from "./util";
@@ -35,20 +35,20 @@ export function createSubscribable<StoreValue = undefined>({
 	onInit?: () => void;
 	onDestroy?: () => void;
 } = {}): Subscribable<StoreValue> {
-	const listeners = new Set<Listener<StoreValue>>();
+	const subscribers = new Set<Subscriber<StoreValue>>();
 	return {
-		listen(listener: Listener<StoreValue>): () => void {
-			if (listeners.size === 0) onInit();
-			listeners.add(listener);
-			// Call listener when it is registered
-			listener(getState());
+		subscribe(subscriber: Subscriber<StoreValue>): () => void {
+			if (subscribers.size === 0) onInit();
+			subscribers.add(subscriber);
+			// Call subscriber when it is registered
+			subscriber(getState());
 			return () => {
-				listeners.delete(listener);
-				if (listeners.size === 0) onDestroy();
+				subscribers.delete(subscriber);
+				if (subscribers.size === 0) onDestroy();
 			};
 		},
-		notify: () => listeners.forEach((listener) => listener(getState())),
-		getSize: () => listeners.size,
+		notify: () => subscribers.forEach((subscriber) => subscriber(getState())),
+		getSize: () => subscribers.size,
 	};
 }
 
@@ -59,7 +59,7 @@ export function createHistoryContainer<State = unknown>({
 }): HistoryContainer<State> {
 	let location = initialLocation;
 	let action: Action = POP;
-	const { listen, notify } = createSubscribable({
+	const { subscribe, notify } = createSubscribable({
 		getState: () => ({ location, action }),
 	});
 
@@ -75,6 +75,6 @@ export function createHistoryContainer<State = unknown>({
 			action = nextAction;
 			notify();
 		},
-		listen,
+		subscribe,
 	};
 }

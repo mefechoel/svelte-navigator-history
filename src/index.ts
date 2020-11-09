@@ -6,8 +6,12 @@ export { default as hashHistory } from "./singletons/hash";
 export { default as memoryHistory } from "./singletons/memory";
 export { parsePath, stringifyPath } from "./util";
 export { default as createNavigate } from "./navigate";
+export { default as HistoryType } from "./HistoryType";
 export type {
 	NavigatorHistory,
+	BrowserHistory,
+	HashHistory,
+	MemoryHistory,
 	NavigatorLocation,
 	Action,
 	NavigateOptions,

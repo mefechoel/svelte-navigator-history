@@ -14,7 +14,8 @@ import {
 	createState,
 	getBrowserStateAndKey,
 } from "./shared";
-import type { CreateHref, HistoryActions, NavigatorHistory } from "./types";
+import type { CreateHref, HistoryActions, HashHistory } from "./types";
+import HistoryType from "./HistoryType";
 
 export interface HashHistoryOptions {
 	window?: Window;
@@ -27,11 +28,11 @@ export interface HashHistoryOptions {
  *
  * @param {HashHistoryOptions} [options] Supply a custom window object
  *
- * @returns {NavigatorHistory} The history object
+ * @returns {HashHistory} The history object
  */
 export default function createHashHistory<State = unknown>({
 	window = document.defaultView as Window,
-}: HashHistoryOptions = {}): NavigatorHistory<State> {
+}: HashHistoryOptions = {}): HashHistory<State> {
 	const { history, location } = window;
 
 	const getHashPath = () => substr(location.hash, 1);
@@ -42,7 +43,7 @@ export default function createHashHistory<State = unknown>({
 	});
 
 	const {
-		listen,
+		subscribe,
 		set: setState,
 		getAction,
 		getLocation,
@@ -62,6 +63,7 @@ export default function createHashHistory<State = unknown>({
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
 			const fullUri = createHref(uri);
+			// try...catch iOS Safari limits to 100 pushState calls
 			try {
 				history.pushState(createState(state), "", fullUri);
 			} catch (e) {
@@ -85,7 +87,7 @@ export default function createHashHistory<State = unknown>({
 		get action() {
 			return getAction();
 		},
-		listen,
+		subscribe,
 		createHref,
 		navigate: createNavigate(actions),
 		release() {
@@ -93,5 +95,6 @@ export default function createHashHistory<State = unknown>({
 			hashchangeUnlisten();
 		},
 		...actions,
+		[HistoryType]: "hash",
 	};
 }
