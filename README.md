@@ -8,13 +8,14 @@
 History module for
 [svelte-navigator](https://github.com/mefechoel/svelte-navigator). It abstracts
 the management of the apps location using either the HTML5 History API, the hash
-fragment of the url or an in-memory mode.
+fragment of the URL or an in-memory mode.
 
 ⚠️⚠️⚠️ This is an **_experimental_** package, that will be used for the next
 version of svelte-navigator. ⚠️⚠️⚠️
 
 ## Table of Contents
 
+- [Build requirements](#build-requirements)
 - [API](#api)
   - [`NavigatorHistory`](#navigatorhistory)
   - [Browser History](#browser-history)
@@ -30,6 +31,50 @@ version of svelte-navigator. ⚠️⚠️⚠️
   - [`stringifyPath`](#stringifypath)
   - [`createNavigate`](#createnavigate)
 - [License](#license)
+
+## Build requirements
+
+Svelte Navigator History depends on a build process in which certain environment
+variables are replaced. This is necessary in order to provide descriptive error
+message in development, while keeping the production bundles lean.
+
+If you're using rollup you can use
+[`@rollup/plugin-replace`](https://github.com/rollup/plugins/tree/master/packages/replace)
+like so:
+
+```js
+// rollup.config.js
+import replace from "@rollup/plugin-replace";
+
+const isDev = Boolean(process.env.ROLLUP_WATCH);
+const nodeEnv = isDev ? "development" : "production";
+
+export default {
+	// ...
+	plugins: [
+		// ...
+		replace({ "process.env.NODE_ENV": JSON.stringify(nodeEnv) }),
+	],
+};
+```
+
+If you're using webpack you can use
+[`webpack.DefinePlugin`](https://webpack.js.org/plugins/define-plugin/):
+
+```js
+// webpack.config.js
+const webpack = require("webpack");
+
+module.exports = {
+	// ...
+	plugins: [
+		// ...
+		new webpack.DefinePlugin({
+			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+		});
+	],
+};
+```
 
 ## API
 
@@ -47,7 +92,7 @@ interface NavigatorHistory<State = unknown> {
 	readonly location: NavigatorLocation<State>;
 	readonly action: Action;
 
-	listen: (listener: Listener<HistoryUpdate<State>>) => () => void;
+	subscribe: (subscriber: Subscriber<HistoryUpdate<State>>) => () => void;
 	createHref: (to: string) => string;
 	release: () => void;
 }
@@ -55,10 +100,10 @@ interface NavigatorHistory<State = unknown> {
 
 #### `push`
 
-Calling `history.push` navigates to a new url and optionally pushes a value to
+Calling `history.push` navigates to a new URL and optionally pushes a value to
 the history stack. The state is an arbitrary (serializable) value. It can be
 thought of as something like the message body of an http post request. It
-contains details which are not visible in the url, but are bound to the specific
+contains details which are not visible in the URL, but are bound to the specific
 request.
 
 ```js
@@ -72,7 +117,7 @@ history.push("/about", { from: "/blog" });
 
 #### `replace`
 
-Calling `history.replace` replaces the current url and optionally the value of
+Calling `history.replace` replaces the current URL and optionally the value of
 the history stack.
 
 ```js
@@ -96,7 +141,7 @@ const goForward = () => history.go(1);
 
 #### `navigate`
 
-`history.navigate` ist a convenience method, that combines the functionality of
+`history.navigate` is a convenience method, that combines the functionality of
 `push`, `replace` and `go`.
 
 ```js
@@ -117,9 +162,9 @@ history.navigate(-1);
 
 #### `location`
 
-The location represents the current state of the url. It is very similar to the
-builtin `window.location`, in that it has properties for the `pathname`,
-`search` and `hash` of the url. It can however also carry a state, that can be
+The location represents the current state of the URL. It is very similar to the
+built-in `window.location`, in that it has properties for the `pathname`,
+`search` and `hash` of the URL. It can however also carry a state, that can be
 set when changing location.
 
 A location looks like this:
@@ -127,7 +172,7 @@ A location looks like this:
 ```ts
 interface NavigatorLocation<State = unknown> {
 	pathname: string;
-	// `search` and `hash` are `""`, when they are not present in the url.
+	// `search` and `hash` are `""`, when they are not present in the URL.
 	// When they are, they begin with a `"?"` or a `"#"` respectively
 	search: string;
 	hash: string;
@@ -152,23 +197,24 @@ are:
 - `"REPLACE"`: An entry of the history stack has been replaced with another one.
   This is caused when `history.replace` has been called.
 
-#### `listen`
+#### `subscribe`
 
-You can register an event handler by calling `history.listen`. The handler you
-pass to `listen` is called with the location and action of the latest
-navigation. It is also called when the listener is registered. `listen` returns
-an `unlisten` function, which when called removes the event listener.
+You can register an event handler by calling `history.subscribe`. The handler
+you pass to `subscribe` is called with the location and action of the latest
+navigation. It is also called when the subscriber is registered. `subscribe`
+returns an `unsubscribe` function, which when called removes the event
+subscriber.
 
 ```js
-const unlisten = history.listen(({ location, action }) => {
+const unsubscribe = history.subscribe(({ location, action }) => {
 	const url = `${location.pathname}${location.search}${location.hash}`;
 	console.log(`Action: ${action}; Url: ${url}`);
 });
 
 // ... do something ...
 
-// Remove the listener
-unlisten();
+// Remove the subscriber
+unsubscribe();
 ```
 
 #### `createHref`
@@ -189,8 +235,8 @@ and allow the instance to be garbage collected, preventing memory leaks.
 
 Browser history uses the
 [HTML5 History API](https://developer.mozilla.org/en-US/docs/Web/API/History) to
-store app's loaction and state in the url. This is probably the best choice for
-most apps, as it enables best ceo possibilities and will be most intuitive for
+store app's location and state in the URL. This is probably the best choice for
+most apps, as it enables best CEO possibilities and will be most intuitive for
 most users. This setup however needs some additional work because you need to
 configure your server to always serve your index.html file when a request
 doesn't match a file. You can read more about it in
@@ -198,7 +244,7 @@ doesn't match a file. You can read more about it in
 
 #### `createBrowserHistory`
 
-Create an instance of a browser history. It will update the url when the app's
+Create an instance of a browser history. It will update the URL when the app's
 location changes. It will also listen to navigation events dispatched by the
 browser after the back and forward buttons have been clicked.
 
@@ -213,7 +259,7 @@ import { createBrowserHistory } from "svelte-navigator-history";
 
 const history = createBrowserHistory();
 
-history.listen(console.log);
+history.subscribe(console.log);
 
 history.navigate("/blog?id=123");
 ```
@@ -226,20 +272,20 @@ convenience. It can be used as the default history instance.
 ```js
 import { browserHistory } from "svelte-navigator-history";
 
-browserHistory.listen(console.log);
+browserHistory.subscribe(console.log);
 
 browserHistory.navigate("/blog?id=123");
 ```
 
 ### Hash History
 
-Hash history uses the hash fragment of the url to simulate routing via url. This
+Hash history uses the hash fragment of the URL to simulate routing via URL. This
 approach is great if you want to get started quickly or if you don't have access
 to your server's configuration.
 
 #### `createHashHistory`
 
-Create an instance of a hash history. It will change the hash of the url when
+Create an instance of a hash history. It will change the hash of the URL when
 the app's location changes.
 
 Again, you should not interact with the global `history` or `location` objects
@@ -250,7 +296,7 @@ import { createHashHistory } from "svelte-navigator-history";
 
 const history = createHashHistory();
 
-history.listen(console.log);
+history.subscribe(console.log);
 
 history.navigate("/blog?id=123");
 ```
@@ -263,7 +309,7 @@ It can be used as the default history instance.
 ```js
 import { hashHistory } from "svelte-navigator-history";
 
-hashHistory.listen(console.log);
+hashHistory.subscribe(console.log);
 
 hashHistory.navigate("/blog?id=123");
 ```
@@ -272,12 +318,12 @@ hashHistory.navigate("/blog?id=123");
 
 Memory history keeps the location state of your app in memory. This is mainly
 useful for testing if you don't run your tests in a browser. You could also use
-a memory history if you want to controll the state of a widget you embed in
+a memory history if you want to control the state of a widget you embed in
 another app using a router.
 
 #### `createMemoryHistory`
 
-Create an instance of a hash history. It will change the hash of the url when
+Create an instance of a hash history. It will change the hash of the URL when
 the app's location changes.
 
 Again, you should not interact with the global `history` or `location` objects
@@ -288,7 +334,7 @@ import { createMemoryHistory } from "svelte-navigator-history";
 
 const history = createMemoryHistory();
 
-history.listen(console.log);
+history.subscribe(console.log);
 
 history.navigate("/blog?id=123");
 ```
@@ -301,14 +347,14 @@ convenience. It can be used as the default history instance.
 ```js
 import { memoryHistory } from "svelte-navigator-history";
 
-memoryHistory.listen(console.log);
+memoryHistory.subscribe(console.log);
 
 memoryHistory.navigate("/blog?id=123");
 ```
 
 ### `parsePath`
 
-Create a location object from a url string.
+Create a location object from a URL string.
 
 ```js
 import { parsePath } from "svelte-navigator-history";
