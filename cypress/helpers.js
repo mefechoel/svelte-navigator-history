@@ -85,3 +85,32 @@ export const assertStringifyPath = (input, expected) =>
 	history("stringifyPath").then((stringifyPath) => {
 		expect(stringifyPath(input)).to.equal(expected);
 	});
+
+export const createSubscribe = (mod) => (handler) => {
+	let unsubscribeCalled = false;
+	const store = {
+		unsubscribe() {
+			unsubscribeCalled = true;
+		},
+	};
+	history(mod).then((hist) => {
+		if (unsubscribeCalled) return;
+		store.unsubscribe = hist.subscribe(handler);
+	});
+	return store;
+};
+
+export const assertSubscribe = (navState, path, action, state = null) =>
+	cy
+		.wrap()
+		.then(() => navState.value.action)
+		.should("equal", action)
+		.then(() => navState.value.location.pathname)
+		.should("equal", path)
+		.then(() => navState.value.location.state)
+		.should("deep.equal", state);
+
+export const createAssertHref = (mod) => (input, expected) =>
+	history(mod)
+		.then((hist) => hist.createHref(input))
+		.should("equal", expected);
