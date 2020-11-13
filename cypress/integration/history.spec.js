@@ -12,6 +12,13 @@ import {
 	createAssertHref,
 	assertSubscribe,
 } from "../helpers";
+import {
+	createBrowserHistory,
+	createHashHistory,
+	createMemoryHistory,
+	parsePath,
+	stringifyPath,
+} from "../../src/index.ts";
 
 describe("History", () => {
 	const runTest = (mod) => {
@@ -212,7 +219,7 @@ describe("History", () => {
 				});
 
 				it("only search", () => {
-					navigate("?q=search-value");
+					navigate("/?q=search-value");
 					assertHistoryLocation({
 						pathname: "/",
 						search: "?q=search-value",
@@ -221,7 +228,7 @@ describe("History", () => {
 				});
 
 				it("only hash", () => {
-					navigate("#result-3");
+					navigate("/#result-3");
 					assertHistoryLocation({
 						pathname: "/",
 						search: "",
@@ -230,7 +237,7 @@ describe("History", () => {
 				});
 
 				it("only hash and search", () => {
-					navigate("?q=search-value#result-3");
+					navigate("/?q=search-value#result-3");
 					assertHistoryLocation({
 						pathname: "/",
 						search: "?q=search-value",
@@ -394,6 +401,81 @@ describe("History", () => {
 				},
 				"/path#hash",
 			);
+		});
+	});
+
+	describe("Errors", () => {
+		let browserHistory;
+		let hashHistory;
+		let memoryHistory;
+
+		before(() => {
+			browserHistory = createBrowserHistory();
+			hashHistory = createHashHistory();
+			memoryHistory = createMemoryHistory();
+		});
+
+		after(() => {
+			browserHistory.release();
+			hashHistory.release();
+			memoryHistory.release();
+		});
+
+		const runErrorTest = (name, history) => {
+			describe(name, () => {
+				it("history.push", () => {
+					expect(() => history.push(123)).to.throw();
+					expect(() => history.push(true)).to.throw();
+					expect(() => history.push({})).to.throw();
+					expect(() => history.push("")).to.throw();
+					expect(() => history.push("relative")).to.throw();
+					expect(() => history.push("?search")).to.throw();
+					expect(() => history.push("#hash")).to.throw();
+				});
+
+				it("history.replace", () => {
+					expect(() => history.replace(123)).to.throw();
+					expect(() => history.replace(true)).to.throw();
+					expect(() => history.replace({})).to.throw();
+					expect(() => history.replace("")).to.throw();
+					expect(() => history.replace("relative")).to.throw();
+					expect(() => history.replace("?search")).to.throw();
+					expect(() => history.replace("#hash")).to.throw();
+				});
+
+				it("history.go", () => {
+					expect(() => history.go("not a number")).to.throw();
+					expect(() => history.go(true)).to.throw();
+					expect(() => history.go({})).to.throw();
+					expect(() => history.go(123.123)).to.throw();
+					expect(() => history.go(-1.5)).to.throw();
+				});
+			});
+		};
+
+		runErrorTest("BrowserHistory", browserHistory);
+		runErrorTest("HashHistory", hashHistory);
+		runErrorTest("MemoryHistory", memoryHistory);
+
+		it("parsePath", () => {
+			expect(() => parsePath(123)).to.throw();
+			expect(() => parsePath(true)).to.throw();
+			expect(() => parsePath({})).to.throw();
+			expect(() => parsePath("relative")).to.throw();
+		});
+
+		it("stringifyPath", () => {
+			expect(() => stringifyPath(123)).to.throw();
+			expect(() => stringifyPath(true)).to.throw();
+			expect(() => stringifyPath("")).to.throw();
+			expect(() => stringifyPath({})).to.throw();
+			expect(() =>
+				stringifyPath({ search: "?search", hash: "#hash" }),
+			).to.throw();
+			expect(() =>
+				stringifyPath({ pathname: "/", search: "?search" }),
+			).to.throw();
+			expect(() => stringifyPath({ pathname: "/", hash: "#hash" })).to.throw();
 		});
 	});
 });
