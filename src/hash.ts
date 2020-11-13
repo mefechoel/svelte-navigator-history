@@ -1,5 +1,7 @@
 import {
 	addListener,
+	assertGoArgs,
+	assertPushReplaceArgs,
 	getPathString,
 	parsePath,
 	POP,
@@ -16,6 +18,14 @@ import {
 } from "./shared";
 import type { CreateHref, HistoryActions, HashHistory } from "./types";
 import HistoryType from "./HistoryType";
+import {
+	HISTORY_GO_DELTA_IS_INT,
+	HISTORY_GO_DELTA_IS_NUM,
+	HISTORY_PUSH_URI_IS_STRING,
+	HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+	HISTORY_REPLACE_URI_IS_STRING,
+	HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+} from "./errorCodes";
 
 export interface HashHistoryOptions {
 	window?: Window;
@@ -62,6 +72,11 @@ export default function createHashHistory<State = unknown>({
 
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_PUSH_URI_IS_STRING,
+				HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+			);
 			const fullUri = createHref(uri);
 			// try...catch iOS Safari limits to 100 pushState calls
 			try {
@@ -72,10 +87,16 @@ export default function createHashHistory<State = unknown>({
 			setState(getHashLocation(), PUSH);
 		},
 		replace(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_REPLACE_URI_IS_STRING,
+				HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+			);
 			history.replaceState(createState(state), "", createHref(uri));
 			setState(getHashLocation(), REPLACE);
 		},
 		go(delta) {
+			assertGoArgs(delta, HISTORY_GO_DELTA_IS_NUM, HISTORY_GO_DELTA_IS_INT);
 			history.go(delta);
 		},
 	};

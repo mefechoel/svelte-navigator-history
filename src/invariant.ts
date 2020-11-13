@@ -3,7 +3,7 @@ import { errorMessages } from "./errorCodes";
 const invariant = (
 	conditionFails: boolean,
 	errorId: number,
-	actual?: false | string,
+	actual?: false | string | number,
 ): void => {
 	if (conditionFails) {
 		if (process.env.NODE_ENV !== "production") {

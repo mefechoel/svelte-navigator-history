@@ -128,3 +128,38 @@ export const addListener = (
 export const POP = "POP";
 export const PUSH = "PUSH";
 export const REPLACE = "REPLACE";
+
+export const assertPushReplaceArgs = (
+	uri: string,
+	isStringId: number,
+	startsWithSlashId: number,
+): void => {
+	invariant(
+		!isString(uri),
+		isStringId,
+		process.env.NODE_ENV !== "production" && typeof uri,
+	);
+	invariant(
+		!startsWith(uri, "/"),
+		startsWithSlashId,
+		process.env.NODE_ENV !== "production" && uri,
+	);
+};
+
+export const assertGoArgs = (
+	delta: number,
+	deltaIsNumId: number,
+	deltaIsIntId: number,
+): void => {
+	invariant(
+		!isNumber(delta),
+		deltaIsNumId,
+		process.env.NODE_ENV !== "production" && typeof delta,
+	);
+	invariant(
+		// `number | 0` => short variant of `Math.floor(number)`
+		delta !== (delta | 0), // eslint-disable-line no-bitwise
+		deltaIsIntId,
+		process.env.NODE_ENV !== "production" && delta,
+	);
+};

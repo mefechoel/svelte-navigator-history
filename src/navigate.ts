@@ -1,7 +1,10 @@
-import { NAVIGATE_STARTS_WITH_SLASH, NAVIGATE_TO_TYPE } from "./errorCodes";
-import invariant from "./invariant";
+import {
+	NAVIGATE_GO_TO_IS_INT,
+	NAVIGATE_STARTS_WITH_SLASH,
+	NAVIGATE_TO_TYPE,
+} from "./errorCodes";
 import type { HistoryActions, NavigateFn, NavigateOptions } from "./types";
-import { isNumber, isString, startsWith } from "./util";
+import { assertGoArgs, assertPushReplaceArgs, isNumber } from "./util";
 
 export default function createNavigate<State = unknown>({
 	go,
@@ -11,6 +14,7 @@ export default function createNavigate<State = unknown>({
 	const navigate = (to: string | number, options?: NavigateOptions<State>) => {
 		const { state = null, replace = false } = options || {};
 		if (isNumber(to)) {
+			assertGoArgs(to, NAVIGATE_TO_TYPE, NAVIGATE_GO_TO_IS_INT);
 			if (process.env.NODE_ENV !== "production" && options) {
 				// eslint-disable-next-line no-console
 				console.warn(
@@ -21,19 +25,7 @@ export default function createNavigate<State = unknown>({
 			}
 			go(to);
 		} else {
-			// Check typeof `to`
-			invariant(
-				!isString(to),
-				NAVIGATE_TO_TYPE,
-				process.env.NODE_ENV !== "production" && typeof to,
-			);
-			// Check if `to` starts with a slash
-			invariant(
-				!startsWith(to, "/") && !startsWith(to, "?") && !startsWith(to, "#"),
-				NAVIGATE_STARTS_WITH_SLASH,
-				process.env.NODE_ENV !== "production" && to,
-			);
-
+			assertPushReplaceArgs(to, NAVIGATE_TO_TYPE, NAVIGATE_STARTS_WITH_SLASH);
 			(replace ? replaceState : push)(to, state);
 		}
 	};

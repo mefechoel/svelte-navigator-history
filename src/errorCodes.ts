@@ -1,19 +1,43 @@
 export const NAVIGATE_TO_TYPE = 0;
-export const NAVIGATE_STARTS_WITH_SLASH = 1;
-export const PARSE_PATH_TYPE = 2;
-export const PARSE_PATH_STARTS_WITH_SLASH = 3;
-export const STRINGIFY_PATH_TYPE = 4;
+export const NAVIGATE_GO_TO_IS_INT = 1;
+export const NAVIGATE_STARTS_WITH_SLASH = 2;
+export const PARSE_PATH_TYPE = 3;
+export const PARSE_PATH_STARTS_WITH_SLASH = 4;
+export const STRINGIFY_PATH_TYPE = 5;
+export const HISTORY_PUSH_URI_IS_STRING = 6;
+export const HISTORY_PUSH_URI_STARTS_WITH_SLASH = 7;
+export const HISTORY_REPLACE_URI_IS_STRING = 8;
+export const HISTORY_REPLACE_URI_STARTS_WITH_SLASH = 9;
+export const HISTORY_GO_DELTA_IS_NUM = 10;
+export const HISTORY_GO_DELTA_IS_INT = 11;
 
 export const errorMessages: { [key: number]: string } = {
 	[NAVIGATE_TO_TYPE]:
-		"First argument to `navigate` is expected to be a string or a number.",
+		"<navigate> First argument is expected to be a string or a number.",
+	[NAVIGATE_GO_TO_IS_INT]:
+		"<navigate> When supplying a number, the first argument is expected to " +
+		"be a whole number.",
 	[NAVIGATE_STARTS_WITH_SLASH]:
-		'First argument to `navigate` must start with "/", "?" or "#".',
-	[PARSE_PATH_TYPE]:
-		"First argument to `parsePath` is expected to be a string.",
+		'<navigate> First argument must start with "/". ' +
+		"Relative and search/hash only navigation is not supported",
+	[PARSE_PATH_TYPE]: "<parsePath> First argument is expected to be a string.",
 	[PARSE_PATH_STARTS_WITH_SLASH]:
-		'First argument to `parsePath` must start with "/", "?" or "#".',
+		'<parsePath> First argument must start with "/", "?" or "#".',
 	[STRINGIFY_PATH_TYPE]:
-		"First argument to `stringifyPath` is expected to be a location object " +
+		"<stringifyPath> First argument is expected to be a location object " +
 		"with `pathname`, `search` and `hash` properties of type string.",
+	[HISTORY_PUSH_URI_IS_STRING]:
+		"<History.push> First argument is expected to be a string.",
+	[HISTORY_PUSH_URI_STARTS_WITH_SLASH]:
+		'<History.push> First argument must start with "/". ' +
+		"Relative and search/hash only navigation is not supported",
+	[HISTORY_REPLACE_URI_IS_STRING]:
+		"<History.replace> First argument is expected to be a string.",
+	[HISTORY_REPLACE_URI_STARTS_WITH_SLASH]:
+		'<History.replace> First argument must start with "/". ' +
+		"Relative and search/hash only navigation is not supported",
+	[HISTORY_GO_DELTA_IS_NUM]:
+		"<History.go> First argument is expected to be a number.",
+	[HISTORY_GO_DELTA_IS_INT]:
+		"<History.go> First argument is expected to be a whole number.",
 };

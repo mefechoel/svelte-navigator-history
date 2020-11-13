@@ -1,4 +1,12 @@
-import { addListener, getPathString, POP, PUSH, REPLACE } from "./util";
+import {
+	addListener,
+	assertGoArgs,
+	assertPushReplaceArgs,
+	getPathString,
+	POP,
+	PUSH,
+	REPLACE,
+} from "./util";
 import createNavigate from "./navigate";
 import {
 	createHistoryContainer,
@@ -7,6 +15,14 @@ import {
 } from "./shared";
 import type { HistoryActions, BrowserHistory } from "./types";
 import HistoryType from "./HistoryType";
+import {
+	HISTORY_GO_DELTA_IS_INT,
+	HISTORY_GO_DELTA_IS_NUM,
+	HISTORY_PUSH_URI_IS_STRING,
+	HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+	HISTORY_REPLACE_URI_IS_STRING,
+	HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+} from "./errorCodes";
 
 export interface BrowserHistoryOptions {
 	window?: Window;
@@ -54,6 +70,11 @@ export default function createBrowserHistory<State = unknown>({
 
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_PUSH_URI_IS_STRING,
+				HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+			);
 			// try...catch iOS Safari limits to 100 pushState calls
 			try {
 				history.pushState(createState(state), "", uri);
@@ -63,10 +84,16 @@ export default function createBrowserHistory<State = unknown>({
 			setState(getBrowserLocation(), PUSH);
 		},
 		replace(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_REPLACE_URI_IS_STRING,
+				HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+			);
 			history.replaceState(createState(state), "", uri);
 			setState(getBrowserLocation(), REPLACE);
 		},
 		go(delta) {
+			assertGoArgs(delta, HISTORY_GO_DELTA_IS_NUM, HISTORY_GO_DELTA_IS_INT);
 			history.go(delta);
 		},
 	};

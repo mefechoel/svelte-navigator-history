@@ -1,4 +1,6 @@
 import {
+	assertGoArgs,
+	assertPushReplaceArgs,
 	getPathObject,
 	getPathString,
 	isString,
@@ -16,6 +18,14 @@ import type {
 	To,
 } from "./types";
 import HistoryType from "./HistoryType";
+import {
+	HISTORY_GO_DELTA_IS_INT,
+	HISTORY_GO_DELTA_IS_NUM,
+	HISTORY_PUSH_URI_IS_STRING,
+	HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+	HISTORY_REPLACE_URI_IS_STRING,
+	HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+} from "./errorCodes";
 
 interface MemoryHistoryObjectOptions {
 	initialEntries?: To[];
@@ -79,6 +89,11 @@ export default function createMemoryHistory<State = unknown>(
 
 	const actions: HistoryActions<State> = {
 		push(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_PUSH_URI_IS_STRING,
+				HISTORY_PUSH_URI_STARTS_WITH_SLASH,
+			);
 			// eslint-disable-next-line no-plusplus
 			index++;
 			// Throw away anything in the stack with an index greater than the current index.
@@ -92,10 +107,16 @@ export default function createMemoryHistory<State = unknown>(
 			setState(getMemoryLocation(), PUSH);
 		},
 		replace(uri, state) {
+			assertPushReplaceArgs(
+				uri,
+				HISTORY_REPLACE_URI_IS_STRING,
+				HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
+			);
 			stack[index] = createStackFrame(uri, state);
 			setState(getMemoryLocation(), REPLACE);
 		},
 		go(delta) {
+			assertGoArgs(delta, HISTORY_GO_DELTA_IS_NUM, HISTORY_GO_DELTA_IS_INT);
 			const newIndex = index + delta;
 			if (newIndex < 0 || newIndex > stack.length - 1) {
 				return;
