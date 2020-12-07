@@ -1,3 +1,9 @@
+# 0.3.1
+
+## Other:
+
+- Fix types for history instances
+
 # 0.3.0
 
 ## Breaking:
