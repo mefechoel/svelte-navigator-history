@@ -1,11 +1,11 @@
 import createHashHistory from "../hash";
-import type { NavigatorHistory } from "../types";
+import type { HashHistory } from "../types";
 
 /**
  * A hash history singleton you can use as the default history instance.
  *
- * @type {NavigatorHistory}
+ * @type {HashHistory}
  */
-const hashHistory: NavigatorHistory = createHashHistory();
+const hashHistory: HashHistory = createHashHistory();
 
 export default hashHistory;

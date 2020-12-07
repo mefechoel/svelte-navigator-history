@@ -1,11 +1,11 @@
 import createMemoryHistory from "../memory";
-import type { NavigatorHistory } from "../types";
+import type { MemoryHistory } from "../types";
 
 /**
  * A memory history singleton you can use as the default history instance.
  *
- * @type {NavigatorHistory}
+ * @type {MemoryHistory}
  */
-const memoryHistory: NavigatorHistory = createMemoryHistory();
+const memoryHistory: MemoryHistory = createMemoryHistory();
 
 export default memoryHistory;

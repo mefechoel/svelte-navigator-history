@@ -1,11 +1,11 @@
 import createBrowserHistory from "../browser";
-import type { NavigatorHistory } from "../types";
+import type { BrowserHistory } from "../types";
 
 /**
  * A browser history singleton you can use as the default history instance.
  *
- * @type {NavigatorHistory}
+ * @type {BrowserHistory}
  */
-const browserHistory: NavigatorHistory = createBrowserHistory();
+const browserHistory: BrowserHistory = createBrowserHistory();
 
 export default browserHistory;
