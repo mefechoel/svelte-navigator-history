@@ -1,3 +1,9 @@
+# 0.3.2
+
+## Other:
+
+- Add note to readme, pointing to new package
+
 # 0.3.1
 
 ## Other:
