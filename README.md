@@ -7,6 +7,10 @@
 [![Code Style Prettier](https://img.shields.io/badge/code%20style-prettier-ff7fe1.svg?style=flat-square)](https://github.com/prettier/prettier#readme)
 [![Build Status](https://img.shields.io/github/workflow/status/mefechoel/svelte-navigator-history/Test?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/actions?query=workflow%3ATest)
 
+⚠️⚠️⚠️ This package moved to
+[`@svelte-navigator/history`](https://www.npmjs.com/package/@svelte-navigator/history).
+⚠️⚠️⚠️
+
 History module for
 [svelte-navigator](https://github.com/mefechoel/svelte-navigator). It abstracts
 the management of the apps location using either the HTML5 History API, the hash
