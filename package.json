@@ -1,12 +1,15 @@
 {
-  "name": "svelte-navigator-history",
+  "name": "@svelte-navigator/history",
   "version": "0.3.2",
   "description": "History module for svelte-navigator",
   "main": "dist/history.umd.js",
   "unpkg": "dist/history.umd.min.js",
   "module": "dist/history.mjs",
   "types": "dist/index.d.ts",
-  "author": "Michel Strelow @mefechoel",
+  "author": {
+		"name": "Michel Strelow",
+		"email": "svelte.navigator@gmail.com"
+	},
   "license": "MIT",
   "repository": {
     "type": "git",

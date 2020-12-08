@@ -1,15 +1,11 @@
 # Svelte Navigator History
 
-[![npm package](https://img.shields.io/npm/v/svelte-navigator-history.svg?style=flat-square)](https://npmjs.com/package/svelte-navigator-history)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/svelte-navigator-history?style=flat-square)](https://bundlephobia.com/result?p=svelte-navigator-history)
-[![NPM](https://img.shields.io/npm/l/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/blob/main/LICENSE)
+[![npm package](https://img.shields.io/npm/v/@svelte-navigator/history.svg?style=flat-square)](https://npmjs.com/package/@svelte-navigator/history)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@svelte-navigator/history?style=flat-square)](https://bundlephobia.com/result?p=@svelte-navigator/history)
+[![NPM](https://img.shields.io/npm/l/@svelte-navigator/history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/blob/main/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/mefechoel/svelte-navigator-history?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/commits/main)
 [![Code Style Prettier](https://img.shields.io/badge/code%20style-prettier-ff7fe1.svg?style=flat-square)](https://github.com/prettier/prettier#readme)
 [![Build Status](https://img.shields.io/github/workflow/status/mefechoel/svelte-navigator-history/Test?style=flat-square)](https://github.com/mefechoel/svelte-navigator-history/actions?query=workflow%3ATest)
-
-⚠️⚠️⚠️ This package moved to
-[`@svelte-navigator/history`](https://www.npmjs.com/package/@svelte-navigator/history).
-⚠️⚠️⚠️
 
 History module for
 [svelte-navigator](https://github.com/mefechoel/svelte-navigator). It abstracts
@@ -261,7 +257,7 @@ current location, and **don't use the browsers `location` object**. Again
 inconsistent location states aren't fun.
 
 ```js
-import { createBrowserHistory } from "svelte-navigator-history";
+import { createBrowserHistory } from "@svelte-navigator/history";
 
 const history = createBrowserHistory();
 
@@ -276,7 +272,7 @@ history.navigate("/blog?id=123");
 convenience. It can be used as the default history instance.
 
 ```js
-import { browserHistory } from "svelte-navigator-history";
+import { browserHistory } from "@svelte-navigator/history";
 
 browserHistory.subscribe(console.log);
 
@@ -298,7 +294,7 @@ Again, you should not interact with the global `history` or `location` objects
 yourself.
 
 ```js
-import { createHashHistory } from "svelte-navigator-history";
+import { createHashHistory } from "@svelte-navigator/history";
 
 const history = createHashHistory();
 
@@ -313,7 +309,7 @@ history.navigate("/blog?id=123");
 It can be used as the default history instance.
 
 ```js
-import { hashHistory } from "svelte-navigator-history";
+import { hashHistory } from "@svelte-navigator/history";
 
 hashHistory.subscribe(console.log);
 
@@ -336,7 +332,7 @@ Again, you should not interact with the global `history` or `location` objects
 yourself.
 
 ```js
-import { createMemoryHistory } from "svelte-navigator-history";
+import { createMemoryHistory } from "@svelte-navigator/history";
 
 const history = createMemoryHistory();
 
@@ -351,7 +347,7 @@ history.navigate("/blog?id=123");
 convenience. It can be used as the default history instance.
 
 ```js
-import { memoryHistory } from "svelte-navigator-history";
+import { memoryHistory } from "@svelte-navigator/history";
 
 memoryHistory.subscribe(console.log);
 
@@ -363,7 +359,7 @@ memoryHistory.navigate("/blog?id=123");
 Create a location object from a URL string.
 
 ```js
-import { parsePath } from "svelte-navigator-history";
+import { parsePath } from "@svelte-navigator/history";
 
 const path = "/search?q=falafel#result-3";
 const location = parsePath(path);
@@ -379,7 +375,7 @@ const location = parsePath(path);
 Joins a location object to one path string.
 
 ```js
-import { stringifyPath } from "svelte-navigator-history";
+import { stringifyPath } from "@svelte-navigator/history";
 
 const location = {
 	pathname: "/search",
@@ -397,7 +393,7 @@ Create the `createNavigate` convenience method expected in the
 implements the `push`, `replace` and `go` methods, to the factory function.
 
 ```js
-import { createNavigate } from "svelte-navigator-history";
+import { createNavigate } from "@svelte-navigator/history";
 
 const customHistory = {
 	push(uri, state) {
