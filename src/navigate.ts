@@ -6,6 +6,9 @@ import {
 import type { HistoryActions, NavigateFn, NavigateOptions } from "./types";
 import { assertGoArgs, assertPushReplaceArgs, isNumber } from "./util";
 
+/**
+ * Create the navigate helper function needed in a `NavigatorHistory`.
+ */
 export default function createNavigate<State = unknown>({
 	go,
 	push,
