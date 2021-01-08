@@ -22,13 +22,10 @@ version of svelte-navigator. ⚠️⚠️⚠️
   - [`NavigatorHistory`](#navigatorhistory)
   - [Browser History](#browser-history)
     - [`createBrowserHistory`](#createbrowserhistory)
-    - [`browserHistory`](#browserhistory)
   - [Hash History](#hash-history)
     - [`createHashHistory`](#createhashhistory)
-    - [`hashHistory`](#hashhistory)
   - [Memory History](#memory-history)
     - [`createMemoryHistory`](#creatememoryhistory)
-    - [`memoryHistory`](#memoryhistory)
   - [`parsePath`](#parsepath)
   - [`stringifyPath`](#stringifypath)
   - [`createNavigate`](#createnavigate)
@@ -76,6 +73,18 @@ module.exports = {
 		}),
 	],
 };
+```
+
+If you don't have access to your build pipeline, `@svelte-navigator/history`
+provides pre-built development and production bundles you can use. Each are
+available as es-module and umd bundle. Import the desired format from the `dist`
+folder:
+
+```js
+import * as History from "@svelte-navigator/history/dist/history.development.mjs";
+import * as History from "@svelte-navigator/history/dist/history.production.mjs";
+import * as History from "@svelte-navigator/history/dist/history.development.umd.js";
+import * as History from "@svelte-navigator/history/dist/history.production.umd.js";
 ```
 
 ## API
@@ -266,19 +275,6 @@ history.subscribe(console.log);
 history.navigate("/blog?id=123");
 ```
 
-#### `browserHistory`
-
-`browserHistory` is an instance of a BrowserHistory, that is created for
-convenience. It can be used as the default history instance.
-
-```js
-import { browserHistory } from "@svelte-navigator/history";
-
-browserHistory.subscribe(console.log);
-
-browserHistory.navigate("/blog?id=123");
-```
-
 ### Hash History
 
 Hash history uses the hash fragment of the URL to simulate routing via URL. This
@@ -301,19 +297,6 @@ const history = createHashHistory();
 history.subscribe(console.log);
 
 history.navigate("/blog?id=123");
-```
-
-#### `hashHistory`
-
-`hashHistory` is an instance of a HashHistory, that is created for convenience.
-It can be used as the default history instance.
-
-```js
-import { hashHistory } from "@svelte-navigator/history";
-
-hashHistory.subscribe(console.log);
-
-hashHistory.navigate("/blog?id=123");
 ```
 
 ### Memory History
@@ -339,19 +322,6 @@ const history = createMemoryHistory();
 history.subscribe(console.log);
 
 history.navigate("/blog?id=123");
-```
-
-#### `memoryHistory`
-
-`memoryHistory` is an instance of a MemoryHistory, that is created for
-convenience. It can be used as the default history instance.
-
-```js
-import { memoryHistory } from "@svelte-navigator/history";
-
-memoryHistory.subscribe(console.log);
-
-memoryHistory.navigate("/blog?id=123");
 ```
 
 ### `parsePath`

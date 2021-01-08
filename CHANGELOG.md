@@ -1,3 +1,14 @@
+# 0.4.0
+
+## Breaking:
+
+- Remove singelton instances for `browserHistory`, `hashHistory` and
+  `memoryHistory`
+
+## Other:
+
+- Update dev dependencies
+
 # 0.3.2
 
 ## Other:
