@@ -62,7 +62,7 @@ export default function createBrowserHistory<State = unknown>({
 		set: setState,
 		getAction,
 		getLocation,
-	} = createHistoryContainer<State>({ initialLocation: getBrowserLocation() });
+	} = createHistoryContainer<State>(getBrowserLocation());
 
 	const popstateUnlisten = addListener(window, "popstate", () =>
 		setState(getBrowserLocation(), POP),

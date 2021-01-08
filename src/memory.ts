@@ -83,9 +83,7 @@ export default function createMemoryHistory<State = unknown>(
 		set: setState,
 		getAction,
 		getLocation,
-	} = createHistoryContainer<State>({
-		initialLocation: getMemoryLocation(),
-	});
+	} = createHistoryContainer<State>(getMemoryLocation());
 
 	const actions: HistoryActions<State> = {
 		push(uri, state) {

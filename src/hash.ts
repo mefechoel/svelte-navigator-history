@@ -57,7 +57,7 @@ export default function createHashHistory<State = unknown>({
 		set: setState,
 		getAction,
 		getLocation,
-	} = createHistoryContainer<State>({ initialLocation: getHashLocation() });
+	} = createHistoryContainer<State>(getHashLocation());
 
 	const popstateListener = () => setState(getHashLocation(), POP);
 	const popstateUnlisten = addListener(window, "popstate", popstateListener);
