@@ -1,3 +1,22 @@
-import * as NavigatorHistory from "../../src/index.ts";
+import {
+	createBrowserHistory,
+	createHashHistory,
+	createMemoryHistory,
+	parsePath,
+	stringifyPath,
+	createNavigate,
+	HistoryType,
+} from "../../src/index.ts";
 
-window.NavigatorHistory = NavigatorHistory;
+window.NavigatorHistory = {
+	createBrowserHistory,
+	createHashHistory,
+	createMemoryHistory,
+	parsePath,
+	stringifyPath,
+	createNavigate,
+	HistoryType,
+	browserHistory: createBrowserHistory(),
+	hashHistory: createHashHistory(),
+	memoryHistory: createMemoryHistory(),
+};
