@@ -17,8 +17,8 @@
 	"include": ["src/**/*.ts", "src/**/*.js"],
 	"exclude": ["src/**/__testdata__/*"],
 	"ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  },
+		"compilerOptions": {
+			"module": "CommonJS"
+		}
+	}
 }
