@@ -19,6 +19,7 @@ import {
 import type { CreateHref, HistoryActions, HashHistory } from "./types";
 import HistoryType from "./HistoryType";
 import {
+	HASH_HISTORY_NEEDS_DOCUMENT,
 	HISTORY_GO_DELTA_IS_INT,
 	HISTORY_GO_DELTA_IS_NUM,
 	HISTORY_PUSH_URI_IS_STRING,
@@ -26,6 +27,7 @@ import {
 	HISTORY_REPLACE_URI_IS_STRING,
 	HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
 } from "./errorCodes";
+import invariant from "./invariant";
 
 export interface HashHistoryOptions {
 	window?: Window;
@@ -41,8 +43,11 @@ export interface HashHistoryOptions {
  * @returns {HashHistory} The history object
  */
 export default function createHashHistory<State = unknown>({
-	window = document.defaultView as Window,
+	window: windowArg,
 }: HashHistoryOptions = {}): HashHistory<State> {
+	invariant(typeof document === "undefined", HASH_HISTORY_NEEDS_DOCUMENT);
+
+	const window = windowArg || (document.defaultView as Window);
 	const { history, location } = window;
 
 	const getHashPath = () => substr(location.hash, 1);

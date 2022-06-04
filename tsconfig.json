@@ -15,5 +15,10 @@
 		"lib": ["dom", "es6", "dom.iterable", "scripthost", "es7", "esnext"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.js"],
-	"exclude": ["src/**/__testdata__/*"]
+	"exclude": ["src/**/__testdata__/*"],
+	"ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
 }

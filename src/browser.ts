@@ -16,6 +16,7 @@ import {
 import type { HistoryActions, BrowserHistory } from "./types";
 import HistoryType from "./HistoryType";
 import {
+	BROWSER_HISTORY_NEEDS_DOCUMENT,
 	HISTORY_GO_DELTA_IS_INT,
 	HISTORY_GO_DELTA_IS_NUM,
 	HISTORY_PUSH_URI_IS_STRING,
@@ -23,6 +24,7 @@ import {
 	HISTORY_REPLACE_URI_IS_STRING,
 	HISTORY_REPLACE_URI_STARTS_WITH_SLASH,
 } from "./errorCodes";
+import invariant from "./invariant";
 
 export interface BrowserHistoryOptions {
 	window?: Window;
@@ -43,8 +45,11 @@ export interface BrowserHistoryOptions {
  * @returns {BrowserHistory} The history object
  */
 export default function createBrowserHistory<State = unknown>({
-	window = document.defaultView as Window,
+	window: windowArg,
 }: BrowserHistoryOptions = {}): BrowserHistory<State> {
+	invariant(typeof document === "undefined", BROWSER_HISTORY_NEEDS_DOCUMENT);
+
+	const window = windowArg || (document.defaultView as Window);
 	const { history, location } = window;
 
 	const getBrowserLocation = () => {

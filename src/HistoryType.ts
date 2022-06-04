@@ -1,3 +1,3 @@
-const HistoryType = "@@historyType";
+const HistoryType = Symbol("historyType");
 
 export default HistoryType;

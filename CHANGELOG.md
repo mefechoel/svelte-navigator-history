@@ -1,3 +1,17 @@
+# 0.5.0
+
+## Breaking:
+
+- Use `symbol("historyType")` as a type marker instead of `@@historyType`
+
+## Fix:
+
+- Avoid `document is undefined` error in hash and browser history
+
+## Other:
+
+- Generate error codes info md from code
+
 # 0.4.0
 
 ## Breaking:

@@ -247,7 +247,7 @@ and allow the instance to be garbage collected, preventing memory leaks.
 Browser history uses the
 [HTML5 History API](https://developer.mozilla.org/en-US/docs/Web/API/History) to
 store app's location and state in the URL. This is probably the best choice for
-most apps, as it enables best CEO possibilities and will be most intuitive for
+most apps, as it enables best SEO possibilities and will be most intuitive for
 most users. This setup however needs some additional work because you need to
 configure your server to always serve your index.html file when a request
 doesn't match a file. You can read more about it in
